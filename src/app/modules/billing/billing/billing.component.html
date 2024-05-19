@@ -1,0 +1,42 @@
+<section id="form" fxLayout fxLayoutAlign="center">
+    <mat-card appearance="outlined" fxFlex.xs="100%" fxFlex.md="100%" fxFlex.sm="100%" fxFlex="60" fxLayoutGap="10px" class="mat-elevation-z4">
+      <mat-card-header class="form-header">
+        <mat-card-title class="form-title">Billing Form</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <form *ngFor="let row of formRows; let i = index" [formGroup]="form" fxLayout="column" fxLayout.xs="column">
+          <div *ngIf="row.isSingleField" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+            fxLayoutAlign="space-between">
+            <mat-form-field *ngIf="!row.isSectionTitle" fxFlex="100" fxFlex.xs="100" appearance="outline">
+              <mat-icon *ngIf="row.fieldConfig.icon" matPrefix>{{ row.fieldConfig.icon }}</mat-icon>
+              <input *ngIf="!row.isTextArea" type="text" matInput [placeholder]="row.fieldConfig.name"
+                [formControlName]="row.fieldConfig.id" />
+              <textarea *ngIf="row.isTextArea" matInput cdkTextareaAutosize cdkAutosizeMinRows="2" cdkAutosizeMaxRows="10"
+                [placeholder]="row.fieldConfig.name" [formControlName]="row.fieldConfig.id"></textarea>
+            </mat-form-field>
+            <mat-card-title class="section-title" *ngIf="row.isSectionTitle">{{ row.title }}</mat-card-title>
+          </div>
+          <div *ngIf="!row.isSingleField" fxLayout="row" fxLayout.sm="column" fxLayout.xs="column"
+            fxLayoutAlign="space-between">
+            <ng-container *ngFor="let col of row.fields">
+              <mat-form-field appearance="outline" fxFlex="49">
+                <mat-icon *ngIf="col.icon" matPrefix>{{ col.icon }}</mat-icon>
+                <input *ngIf="!col.isLookup" matInput [placeholder]="col.name" [formControlName]="col.id" />
+                <mat-select *ngIf="col.isLookup" [placeholder]="col.name" [formControlName]="col.id">
+                  <mat-option *ngFor="let item of roles" [value]="item.id">{{ item.name }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </ng-container>
+          </div>
+        </form>
+      </mat-card-content>
+      <mat-card-actions fxLayoutAlign="center">
+          <button class="actionButton" mat-raised-button color="primary" type="submit" (click)="save()">
+            Save
+          </button>
+          <button class="actionButton" mat-raised-button color="accent" (click)="cancel()">
+            Close
+          </button>
+      </mat-card-actions>
+    </mat-card>
+  </section>
